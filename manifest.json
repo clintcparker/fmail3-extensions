@@ -1,0 +1,13 @@
+{
+  "repo": "clintcparker/fmail3-extensions",
+  "branch": "main",
+  "bundleVersion": "2026.05.08",
+  "extensions": {
+    "daterange": {
+      "version": "0.1.0",
+      "files": ["fm3-daterange.js", "fm3-daterange.css"],
+      "description": "Adds a date-range picker to Fastmail's search bar.",
+      "configurable": false
+    }
+  }
+}

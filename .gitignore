@@ -1,0 +1,12 @@
+# FMail3 writes this on launch
+readme.txt
+
+# User-local settings (never commit)
+settings.json
+*.local.json
+
+# Planning/scratch files
+*-plan*.md
+
+# macOS noise
+.DS_Store
