@@ -32,9 +32,12 @@ rm -rf "$SCRIPTS.tmp"
 
 ### Activate in FMail3
 
-1. Open FMail3 → **Settings** → Scripts (or Advanced) pane.
-2. Tick `fm3-daterange.js` and `fm3-daterange.css`.
-3. Reload the app.
+Open FMail3 → **Settings** → **Advanced** and confirm these are checked:
+
+- **js files in this folder run at startup**
+- **Inject CSS**
+
+That's it — all `.js` and `.css` files in the Scripts folder are loaded automatically.
 
 ---
 
