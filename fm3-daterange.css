@@ -15,7 +15,8 @@
   border: 0;
   border-radius: 6px;
   background: transparent;
-  color: inherit;
+  /* Always light so it shows against Fastmail's dark navy header in any system theme */
+  color: rgba(255, 255, 255, 0.85);
   cursor: pointer;
   opacity: 0.7;
   transition: opacity 0.15s, background 0.15s;
