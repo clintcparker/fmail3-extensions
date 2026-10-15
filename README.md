@@ -16,6 +16,7 @@ below comes along, and `git pull` brings new ones as they land.
 | Extension | What it does | Files |
 |-----------|--------------|-------|
 | [Date-range picker](#date-range-picker) | Adds a calendar icon to Fastmail's search bar for filtering mail by date range. | `fm3-daterange.js`, `fm3-daterange.css` |
+| [Add all to group](#add-all-to-group) | Adds an **Add all to group** item to the People panel's `...` menu, dropping everyone in a conversation into a Fastmail Contacts group. | `fm3-contactgroup.js`, `fm3-contactgroup.css` |
 
 ---
 
@@ -61,6 +62,66 @@ before:2026-04-01
 Everything up to and including March 31st.
 
 Use **Clear** to remove the date tokens and reset the search.
+
+---
+
+## Add all to group
+
+Open a conversation, switch the right-hand panel to **People**, and click the `...` button. Below
+**Invite all to new event** there's a new **Add all to group** item. It collects every address the
+panel is showing — both *Senders* and *Other recipients*, so it follows whatever the
+**In conversation** toggle is set to — and adds them all to a Fastmail Contacts group in one go.
+
+Choosing the item opens a small popover listing your existing contact groups, with a filter box and
+a **+ New group...** option. Pick one, confirm, and a toast reports what happened:
+
+```
+Added 4 to Lodge Officers - 2 new contacts created
+```
+
+### Behaviour worth knowing
+
+**People who aren't in your Contacts get a card.** A Fastmail group holds contact cards, not loose
+addresses, so anyone unknown gets a minimal card (display name + that one address) in your default
+address book before being added. The toast tells you how many were created.
+
+**Re-running is safe.** Someone already in the group is counted as "already there" rather than
+duplicated, so you can add the same conversation twice without making a mess.
+
+**Partial failures are reported, not silent.** If one address can't be resolved or created, the rest
+still go in and the toast names who failed.
+
+**The same person under two addresses becomes two contacts.** Matching is by email address, so if
+someone appears in the panel under both a work and a personal address, you get two cards unless one
+existing card already lists both.
+
+### Setup: one API token
+
+The first time you use **Add all to group**, it asks for a Fastmail API token. Create one at
+**Settings → Privacy & Security → Integrations → New API token**, give it **Contacts** access, and
+paste it in. It's stored in `localStorage` and remembered from then on.
+
+Scope the token to Contacts rather than granting it everything — it's kept in browser storage, where
+any script running on the Fastmail origin could read it. If you ever want to revoke it, delete it in
+Fastmail's Integrations settings; the extension will prompt again next time.
+
+A token that's rejected, or that lacks Contacts access, shows the reason in the popover with an
+option to enter a different one.
+
+<details>
+<summary>Why a token, rather than reusing the session you're already logged into?</summary>
+
+Because the web client's credentials aren't reachable from an injected script. Cookies don't
+authenticate JMAP — `api.fastmail.com` answers `401`. The client does hold an access token in
+`window.FastMail.auth`, but sending it as a bearer token is also rejected, and the adjacent
+`signingId` / `signingKey` fields suggest requests are signed rather than merely bearing a token.
+
+Patching `fetch`, `XMLHttpRequest`, `WebSocket`, `EventSource` and `sendBeacon` in page context
+captures **no** API traffic at all while the client is actively loading mail — so Fastmail runs its
+JMAP layer in a worker context that page scripts can't observe or borrow from. An API token is the
+supported way in, and it has the happier property of not breaking when Fastmail ships a new build.
+
+</details>
 
 ---
 
@@ -118,7 +179,7 @@ Remove its files from the `Scripts` folder:
 
 ```bash
 SCRIPTS="$HOME/Library/Containers/fr.arievanboxel.FMail3/Data/Documents/Scripts"
-git -C "$SCRIPTS" rm fm3-daterange.js fm3-daterange.css
+git -C "$SCRIPTS" rm fm3-daterange.js fm3-daterange.css   # or fm3-contactgroup.*
 ```
 
 Restart FMail3 and the extension is gone.
