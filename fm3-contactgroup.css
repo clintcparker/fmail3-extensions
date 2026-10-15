@@ -1,0 +1,215 @@
+/* fm3-contactgroup.css — "Add all to group" for Fastmail in FMail3
+   Companion script: fm3-contactgroup.js
+   Uses CSS system colors (Canvas / CanvasText / Highlight) so the popover
+   follows the system light/dark theme the same way fm3-daterange does. */
+
+/* ── Popover container ────────────────────────────────────────────────────── */
+
+#fm3-group-popover {
+  position: fixed;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  background: Canvas;
+  color: CanvasText;
+  border: 1px solid rgba(127, 127, 127, 0.25);
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  font: 13px -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  min-width: 260px;
+  max-width: 320px;
+}
+
+#fm3-group-popover .fm3-group-head {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.6;
+}
+
+/* ── Text inputs (filter + new group name) ────────────────────────────────── */
+
+#fm3-group-popover input[type="text"],
+#fm3-group-popover input[type="password"] {
+  padding: 6px 8px;
+  border: 1px solid rgba(127, 127, 127, 0.3);
+  border-radius: 6px;
+  background: Canvas;
+  color: CanvasText;
+  font: inherit;
+  font-size: 13px;
+}
+
+#fm3-group-popover input[type="text"]:focus,
+#fm3-group-popover input[type="password"]:focus {
+  outline: 2px solid Highlight;
+  outline-offset: 0;
+  border-color: transparent;
+}
+
+#fm3-group-popover input[hidden] {
+  display: none;
+}
+
+/* ── Setup prompt (API token) ─────────────────────────────────────────────── */
+
+#fm3-group-popover .fm3-group-note {
+  font-size: 12px;
+  line-height: 1.45;
+  opacity: 0.75;
+}
+
+#fm3-group-popover .fm3-group-err {
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: rgba(200, 60, 55, 0.14);
+  border: 1px solid rgba(200, 60, 55, 0.35);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* ── Group list ───────────────────────────────────────────────────────────── */
+
+#fm3-group-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid rgba(127, 127, 127, 0.2);
+  border-radius: 6px;
+  padding: 3px;
+}
+
+#fm3-group-popover .fm3-group-row {
+  display: block;
+  width: 100%;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: CanvasText;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#fm3-group-popover .fm3-group-row:hover {
+  background: rgba(127, 127, 127, 0.12);
+}
+
+#fm3-group-popover .fm3-group-row.is-selected {
+  background: rgb(0, 102, 204);
+  color: #fff;
+}
+
+#fm3-group-popover .fm3-group-empty {
+  padding: 10px 8px;
+  text-align: center;
+  font-size: 12px;
+  opacity: 0.55;
+}
+
+/* ── "New group…" toggle ──────────────────────────────────────────────────── */
+
+#fm3-group-popover .fm3-group-new {
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: rgb(0, 102, 204);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+#fm3-group-popover .fm3-group-new:hover {
+  background: rgba(127, 127, 127, 0.12);
+}
+
+#fm3-group-popover .fm3-group-new[hidden] {
+  display: none;
+}
+
+/* ── Action buttons ───────────────────────────────────────────────────────── */
+
+#fm3-group-popover .fm3-group-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+#fm3-group-popover .fm3-group-actions button {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid rgba(127, 127, 127, 0.3);
+  border-radius: 6px;
+  background: Canvas;
+  color: CanvasText;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+#fm3-group-popover .fm3-group-actions button:hover {
+  background: rgba(127, 127, 127, 0.12);
+}
+
+#fm3-group-popover #fm3-group-confirm {
+  background: rgb(0, 102, 204);
+  border-color: transparent;
+  color: #fff;
+  font-weight: 500;
+}
+
+#fm3-group-popover #fm3-group-confirm:hover {
+  background: rgb(0, 85, 170);
+}
+
+#fm3-group-popover #fm3-group-confirm:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+#fm3-group-popover button:focus-visible,
+#fm3-group-popover input:focus-visible {
+  outline: 2px solid Highlight;
+  outline-offset: 1px;
+}
+
+/* ── Result toast ─────────────────────────────────────────────────────────── */
+
+#fm3-group-toast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 100000;
+  max-width: 360px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(127, 127, 127, 0.25);
+  border-left-width: 3px;
+  background: Canvas;
+  color: CanvasText;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  font: 13px -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  animation: fm3-group-toast-in 0.18s ease-out;
+}
+
+#fm3-group-toast[data-kind="ok"]    { border-left-color: rgb(42, 157, 95); }
+#fm3-group-toast[data-kind="warn"]  { border-left-color: rgb(214, 148, 0); }
+#fm3-group-toast[data-kind="error"] { border-left-color: rgb(200, 60, 55); }
+
+@keyframes fm3-group-toast-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
