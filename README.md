@@ -72,8 +72,17 @@ Open a conversation, switch the right-hand panel to **People**, and click the `.
 panel is showing — both *Senders* and *Other recipients*, so it follows whatever the
 **In conversation** toggle is set to — and adds them all to a Fastmail Contacts group in one go.
 
+![The People panel's ... menu, with Add all to group below Invite all to new event](https://raw.githubusercontent.com/clintcparker/fmail3-extensions/main/docs/group-menu.png)
+
+*The item sits below **Invite all to new event**. It's built by cloning Fastmail's own menu row, so
+it picks up the host styling rather than approximating it.*
+
 Choosing the item opens a small popover listing your existing contact groups, with a filter box and
 a **+ New group...** option. Pick one, confirm, and a toast reports what happened:
+
+![The group picker popover, filtering groups with a New group option and an Add button](https://raw.githubusercontent.com/clintcparker/fmail3-extensions/main/docs/group-picker.png)
+
+*Type to filter your groups, or create one on the spot. The button counts the people going in.*
 
 ```
 Added 4 to Lodge Officers - 2 new contacts created
